@@ -39,7 +39,6 @@ public class Main extends javax.swing.JFrame {
     }
 
     public void tampil() {
-        int row = table.getRowCount();
         ArrayList<Makanan> makananList = makananService.all();
         for (Makanan makanan : makananList) {
             addDataToTable(String.valueOf(makanan.getId()), makanan.getNamaMakanan(), String.valueOf(makanan.getRating()));
