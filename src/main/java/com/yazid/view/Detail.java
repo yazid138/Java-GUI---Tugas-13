@@ -6,8 +6,8 @@ package com.yazid.view;
 
 import java.util.ArrayList;
 import javax.swing.JFrame;
-import models.makanan.Makanan;
-import models.makanan.MakananService;
+import com.yazid.models.makanan.Makanan;
+import com.yazid.models.makanan.MakananService;
 
 /**
  *

@@ -11,8 +11,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
-import models.makanan.Makanan;
-import models.makanan.MakananService;
+import com.yazid.models.makanan.Makanan;
+import com.yazid.models.makanan.MakananService;
 
 /**
  *
@@ -116,7 +116,7 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1.setViewportView(table);
 
         labelNama.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        labelNama.setText("Nama Makanan");
+        labelNama.setText("Nama Makanan*");
 
         tfNama.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -124,10 +124,10 @@ public class Main extends javax.swing.JFrame {
         labelJenis.setText("Jenis Makanan");
 
         labelRating.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        labelRating.setText("Rating");
+        labelRating.setText("Rating*");
 
         labelKalori.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        labelKalori.setText("Jumlah Kalori");
+        labelKalori.setText("Jumlah Kalori*");
 
         tfRating.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -197,9 +197,9 @@ public class Main extends javax.swing.JFrame {
                                             .addComponent(selectJenis, javax.swing.GroupLayout.Alignment.LEADING, 0, 104, Short.MAX_VALUE)
                                             .addComponent(tfRating))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(labelKalori, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(labelKalori)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(tfKalori, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(tfKalori, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGap(18, 18, 18))
                             .addGroup(panelLayout.createSequentialGroup()
                                 .addComponent(btnSimpan)
@@ -263,15 +263,17 @@ public class Main extends javax.swing.JFrame {
 
     private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
         // TODO add your handling code here:
-        if (tfNama.getText() == "" || tfRating.getText() == "" || tfKalori.getText() == "") {
-            JOptionPane.showMessageDialog(this, "Data masih ada yang kosong");
+        if (tfNama.getText().isBlank() || tfRating.getText().isBlank() || tfKalori.getText().isBlank()) {
+            JOptionPane.showMessageDialog(this, "Data inputan harus diisi");
         } else {
             boolean result = makananService.insert(tfNama.getText(), String.valueOf(selectJenis.getSelectedItem()), tfRating.getText(), tfKalori.getText());
             if (result) {
-                System.out.println("created");
+                JOptionPane.showMessageDialog(this, "Data berhasil disimpan");
                 model.setNumRows(0);
                 tampil();
                 reset();
+            } else {
+                JOptionPane.showMessageDialog(this, "Data gagal disimpan");
             }
         }
     }//GEN-LAST:event_btnSimpanActionPerformed
@@ -279,12 +281,12 @@ public class Main extends javax.swing.JFrame {
     private void btnCariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCariActionPerformed
         // TODO add your handling code here:
         model.setNumRows(0);
-        if (tfCari.getText() == "") {
+        if (tfCari.getText().isBlank()) {
             tampil();
         } else {
             ArrayList<Makanan> makananList = makananService.where("nama LIKE '%" + tfCari.getText() + "%'");
-            if (makananList == null) {
-                tampil();
+            if (makananList.size() == 0) {
+                JOptionPane.showMessageDialog(this, "Data makanan tidak ada!");
             } else {
                 for (Makanan makanan : makananList) {
                     table.setModel(model);
@@ -296,7 +298,9 @@ public class Main extends javax.swing.JFrame {
 
     private void btnDetailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDetailActionPerformed
         // TODO add your handling code here:
-        if (tfIdMakanan.getText() != "") {
+        if (tfIdMakanan.getText().isBlank()) {
+            JOptionPane.showMessageDialog(this, "Harap pilih makanan pada tabel!");
+        } else {
             JFrame detailPage = new Detail(Integer.parseInt(tfIdMakanan.getText()));
             detailPage.setVisible(true);
         }
